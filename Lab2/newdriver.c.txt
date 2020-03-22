@@ -1,0 +1,19 @@
+#include "linkedlist.h"
+#include "stack.h"
+void main(int argc, char*argv[])
+{
+struct linkedlist*h=(struct linkedlist*)malloc(sizeof(struct linkedlist));  //my stack
+int temp;
+FILE fptr=fopen(argv[1],r);
+while(!feof(fptr))
+{
+fscanf(fptr,"%d",&temp);
+push(h,temp);
+}
+FILE*file=fopen("driver.txt",w);
+while(h!=NULL)
+{
+fprintf(file,"%d",pop(h));
+}
+
+}

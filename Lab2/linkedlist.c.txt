@@ -1,0 +1,59 @@
+#include “linkedlist.h”
+
+void insertFirst(struct linkedList * head, int ele){
+struct node *link = (struct node*) malloc (sizeof(struct node));
+link->element = ele;
+link->next = head->first;
+head -> first = link;
+head -> count --;
+}
+
+struct node* deleteFirst(struct linkedList * head){
+struct node*ptr = head->first;
+if(ptr==NULL)
+return head;
+printf("deleting%d",ptr->element);
+ptr=ptr->next;
+head->count--;
+return head;
+}
+
+void printList(struct linkedlist * head){
+struct node *ptr = head->first;
+printf("\n[ ");
+
+while(ptr != NULL){
+printf("%d, ", ptr->element);
+ptr = ptr->next;
+}
+
+printf(" ]");
+}
+
+int search (struct linkedlist * head, int ele)
+{
+struct node*ptr=head->first;
+if(ptr==NULL)
+return 0;
+while(ptr!=NULL)	
+{
+if(ptr->element==ele)
+return 1;
+ptr=ptr->next;
+}
+return 0;
+
+}
+
+struct node * delete (struct linkedList * head, int ele)
+{
+struct node*ptr=head->first;
+if(ptr==NULL)
+{printf("Error");
+exit(0);
+}
+
+head->first=head->first->next;
+head->count--;
+return ptr;
+}

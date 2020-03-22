@@ -1,0 +1,19 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include "linkedlist.h"
+void push(struct linkedlist* head, int ele)
+{
+insertFirst(head,ele);
+head->count++;
+}
+int pop(struct linkedlist*head)
+{int temp;
+struct node*n=head->first;
+while(node->next!=NULL)
+{node=node->next;
+}
+temp=node->element;
+node=NULL;
+head->count--;
+return temp;
+}
