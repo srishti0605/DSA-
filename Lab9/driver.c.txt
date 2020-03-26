@@ -1,0 +1,131 @@
+#include <locale.h>
+#include<stdio.h>
+#include<stdlib.h>
+
+int hash(char a[], int baseNumber, int tableSize){
+int hno,i;
+i=0;
+hno=0;
+while(a[i]){
+hno+=(int)a[i];
+//printf("%d",hno);
+i++;
+}
+hno=hno%baseNumber;
+//printf("%d",hno);
+return hno%tableSize;
+}
+
+int CollisionCount (char *a[], int baseNumber, int tableSize)
+{
+  int i, j, counter = 0;
+  i = 0;
+  while (a[i])
+    {
+      j = i - 1;
+      while (j >= 0)
+	{
+	  if (hash (a[i],baseNumber,tableSize) == hash (a[j],baseNumber,tableSize))
+	   { counter++;break;}
+	  j--;
+	}
+    i++;
+    }
+   // printf("%d",counter);
+  return counter;
+}
+
+typedef char* String;
+String* Parser(FILE * pFile){
+    setlocale(LC_CTYPE,"it_IT.UTF-8");   // put your locale here
+
+   String*mystring;
+   int i=0;
+
+   if (pFile == NULL) perror ("Error opening file");
+   while(!feof(pFile))
+   { while(fscanf (pFile, "%s", mystring[i])) 
+    {printf("%s",mystring[i]);
+       i++;
+    }i--;
+     printf("%d",i);
+     fclose (pFile);
+   }
+   return mystring;
+}
+
+int prime(int num, int tablesize){
+int i, Number, count; 
+  
+  for(Number = num; Number <= 2*tablesize; Number++)
+  {
+    count = 0;
+    for (i = 2; i <= Number/2; i++)
+    {
+  	if(Number%i == 0)
+  	{
+     	  count++;
+  	  break;
+	}
+    }
+    if(count == 0 && Number != 1 )
+    {
+	return Number;
+    }  
+  }
+
+}
+
+void profiling(String*book)
+{
+    int basenumber[6], tablesize[3];
+    tablesize[0]=5000;
+    tablesize[1]=50000;
+    tablesize[2]=500000;
+    int i,j,k,l,min;
+    basenumber[0]=prime(tablesize[0],2*tablesize[0]);
+    min=CollisionCount(book,basenumber[0],tablesize[0]);
+    i=0;k=0;j=0;
+    int x,ix,jx;
+    ix=0;
+    jx=0;
+    while(i<3){         //for each tablesize
+      j=0;  l=tablesize[i];
+      
+      while(j<3){       //generate 3 prime nos.
+         
+         basenumber[k]=prime(l,2*tablesize[i]);
+         printf("\nCollision value of%d",basenumber[k]);
+         printf("and%d",tablesize[i]);
+         x=CollisionCount(book,basenumber[k], tablesize[i]);
+         printf("=%d",x);
+         if(min>x)
+         {
+             min=x;
+             ix=i;
+             jx=j;
+         }
+         l=basenumber[k];
+         k++;
+         j++;
+      }
+      i++;
+    }
+    printf("\nBest parameters are at indices: Tablesize=%d",ix);
+    printf("BaseNumber= %d", jx);
+    
+}
+
+int main(int argc, char*argv[])
+{
+   setlocale(LC_CTYPE,"it_IT.UTF-8");   // put your locale here
+
+   FILE * pfile;
+   String*Book;
+   pfile = fopen(argv[1], "r");
+   if (pfile == NULL) perror ("Error opening file");
+   Book=Parser(pfile);
+   profiling(Book);
+   return 0;
+}
+
